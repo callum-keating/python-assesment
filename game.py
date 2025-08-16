@@ -1,6 +1,7 @@
 try:
     from rich.console import Console
     from rich.table import Table
+    import rich
 except ImportError:
     print("ERROR: couldn't run due to missing dependency. Please run pip install rich")
     quit()
@@ -23,9 +24,7 @@ def mainMenu():
     console = Console()
     console.set_alt_screen(True)
     console.show_cursor(False)
-    console.clear()  # Clear screen at the start of each loop
-    console.print("[center underline large]press p/q")
-    menu = Table(title="Main Menu")
+    menu = Table(title="Main Menu PRESS P OR Q", box=rich.box.ROUNDED)
     menu.add_column("Options", justify="center")
     menu.add_row("P: Play")
     menu.add_row("Q: Quit")
