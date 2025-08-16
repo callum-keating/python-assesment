@@ -21,6 +21,8 @@ finally:
 
 def mainMenu():
     console = Console()
+    console.set_alt_screen(True)
+    console.show_cursor(False)
     console.clear()  # Clear screen at the start of each loop
     console.print("[center underline large]press p/q")
     menu = Table(title="Main Menu")
@@ -36,4 +38,10 @@ def mainMenu():
         console.print("[green]Starting game...[/green]")
     elif key == "q":
         console.print("[red]Quitting...[/red]")
+def end():
+    console = Console()
+    console.show_cursor(True)
+    console.set_alt_screen(False)
+
 mainMenu()
+end()
