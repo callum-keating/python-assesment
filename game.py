@@ -17,19 +17,18 @@ finally:
     except Exception as e:
         print("ERROR: an unknown error occured message: ", e)
         quit()
-
-
-
+import gameSect
 def mainMenu():
     console = Console()
     console.set_alt_screen(True)
     console.show_cursor(False)
-    menu = Table(title="Main Menu PRESS P OR Q", box=rich.box.ROUNDED)
+    menu = Table(title="Main Menu PRESS P OR Q", box=rich.box.ROUNDED, width=console.size.width*0.4)
     menu.add_column("Options", justify="center")
     menu.add_row("P: Play")
     menu.add_row("Q: Quit")
 
-    console.print(menu)
+    console.print(menu, justify="center")
+    console.print("[red]Dont change console size while playing", justify="center")
 
     key = readchar.readchar()
     key = key.lower()
@@ -37,6 +36,8 @@ def mainMenu():
         console.print("[green]Starting game...[/green]")
     elif key == "q":
         console.print("[red]Quitting...[/red]")
+    gameSect.game()
+    end()
 def end():
     console = Console()
     console.show_cursor(True)
