@@ -1,4 +1,4 @@
-characters = ["Knight"]
+characters = ["Knight", "Mage", "Rogue", "Archer",]
 
 # name/damage pair
 knightAttacks = {"Swing sword": 20, "Lance": 40}
@@ -16,6 +16,7 @@ class Knight:
         self.hp -= damage
     def useAttack():
         pass
+    
 
 
 # if wrong file is opened
