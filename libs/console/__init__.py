@@ -38,8 +38,8 @@ class selectableTable:
         self.title = "testing"
     def refresh(self):
         for i in range(len(self.rows)):
-            self.neededRows += len(self.rows[i]) + 2
-        self.neededRows -= 1
+            self.neededRows += len(self.rows[i]) + 1
+        self.neededRows += 1
         print(self.neededRows)
         for i in range(int(self.neededRows/2 - len(self.title)/2)):
             print(" ", end='')
