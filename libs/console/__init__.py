@@ -32,18 +32,26 @@ class Console:
 class selectableTable:
     def __init__(self):
         self.rows = []
-        self.columns = []
         self.position = "left" # can be left right or center
         self.selectedRow = 0
         self.neededRows = 0
+        self.title = "testing"
     def refresh(self):
         for i in range(len(self.rows)):
             self.neededRows += len(self.rows[i]) + 2
-            pass
+        self.neededRows -= 1
+        print(self.neededRows)
+        for i in range(int(self.neededRows/2 - len(self.title)/2)):
+            print(" ", end='')
+        print(self.title)
         for i in range(self.neededRows):
             print('—',end='')
         print('')
-    def addCol(self, name:str):
-        self.columns.append(name)
+        for i in range(len(self.rows)):
+            print(f"|{self.rows[i]}", end='')
+        print('|')
+        for i in range(self.neededRows):
+            print('—',end='')
+        print('')
     def addRow(self, name:str):
         self.rows.append(name)
