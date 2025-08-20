@@ -1,47 +1,9 @@
-try:
-    from rich.console import Console
-    from rich.table import Table
-    import rich
-except ImportError:
-    print("ERROR: couldn't run due to missing dependency. Please run pip install rich")
-    quit()
-except Exception as e:
-    print("ERROR: an unknown error occured message: ", e)
-    quit()
-finally:
-    try:
-        import readchar
-    except ImportError:
-        print("ERROR: couldn't run due to missing dependency. Please run pip install readchar")
-        quit()
-    except Exception as e:
-        print("ERROR: an unknown error occured message: ", e)
-        quit()
-import gameSect
-def mainMenu():
-    console = Console()
-    console.set_alt_screen(True)
-    console.show_cursor(False)
-    menu = Table(title="Main Menu PRESS P OR Q", box=rich.box.ROUNDED, width=console.size.width*0.4)
-    menu.add_column("Options", justify="center")
-    menu.add_row("P: Play")
-    menu.add_row("Q: Quit")
+import libs.console as consoleLib
 
-    console.print(menu, justify="center")
-    console.print("[red]Dont change console size while playing", justify="center")
-
-    key = readchar.readchar()
-    key = key.lower()
-    if key == "p":
-        console.print("[green]Starting game...[/green]")
-    elif key == "q":
-        console.print("[red]Quitting...[/red]")
-    gameSect.game()
-    end()
-def end():
-    console = Console()
-    console.show_cursor(True)
-    console.set_alt_screen(False)
-
-mainMenu()
-end()
+console = consoleLib.Console()
+table = consoleLib.selectableTable()
+console.clear()
+console.print("hello")
+table.addCol("hello")
+table.addRow("hello")
+table.refresh()
