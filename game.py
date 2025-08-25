@@ -69,11 +69,12 @@ class Illusionist:
     def __init__(self):
         self.hp = 95
         self.attacks = [
-            {"name": "Mirror Image", "damage": 0, "accuracy": 100, "effect": "create clone to absorb next hit"},
             {"name": "Phantom Strike", "damage": 10, "accuracy": 75},
-            {"name": "Mind Twist", "damage": 7, "accuracy": 85, "effect": "confuse enemy, chance to miss next attack"},
-            {"name": "False Reality", "damage": 0, "accuracy": 100, "effect": "force enemy to attack themselves (low chance)"},
-            {"name": "Vanishing Veil", "damage": 0, "accuracy": 100, "effect": "dodge next attack if timed well"},
+            {"name": "Mind Twist", "damage": 7, "accuracy": 85},
+            {"name": "Spectral Slash", "damage": 8, "accuracy": 80},
+            {"name": "Ethereal Blast", "damage": 12, "accuracy": 65},
+            {"name": "Hallucination", "damage": 9, "accuracy": 70},
+            {"name": "Shadow Rend", "damage": 11, "accuracy": 75},
         ]
 
 
@@ -126,10 +127,14 @@ def main():
             if 1 <= selected <= len(attacks):
                 chosen_attack = attacks[selected - 1]
                 print(f"You selected: {chosen_attack['name']}")
-                if random.randint(1, chosen_attack['accuracy']) > chosen_attack['accuracy']:
-                    print("attack missed")
-                else:
+                accuracy = chosen_attack['accuracy']
+                randomNum = random.randint(1, 100)
+                hitChance = randomNum <= accuracy
+                print(f"Hit chance and accuracy: {randomNum}, {accuracy}")
+                if hitChance:
                     print(f"attack hit enemy health at,")
+                else:
+                    print("attack missed")
                 break
         print("Invalid selection. Please try again.")
 
