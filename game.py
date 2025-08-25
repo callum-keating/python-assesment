@@ -27,9 +27,8 @@ class Scavenger:
             {"name": "Tripwire", "damage": 8, "accuracy": 75},
             {"name": "Molotov", "damage": 10, "accuracy": 65},
             {"name": "Slingshot", "damage": 6, "accuracy": 85},
-            {"name": "Explosive Barrel", "damage": 18, "accuracy": 60, "backfire": {"chance": 20}}
+            {"name": "Explosive Barrel", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
         ]
-        self.role = "Scavenger"
 
 class Medic:
     def __init__(self):
@@ -40,9 +39,8 @@ class Medic:
             {"name": "Poison Dart", "damage": 8, "accuracy": 75},
             {"name": "Defibrillator Shock", "damage": 12, "accuracy": 60},
             {"name": "Adrenaline Rush", "damage": 10, "accuracy": 70},
-            {"name": "Toxic Overdose", "damage": 20, "accuracy": 55, "backfire": {"chance": 20}}
+            {"name": "Toxic Overdose", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
         ]
-        self.role = "Medic"
 
 class Veteran:
     def __init__(self):
@@ -53,9 +51,8 @@ class Veteran:
             {"name": "Bayonet Charge", "damage": 8, "accuracy": 80},
             {"name": "Knife Throw", "damage": 9, "accuracy": 75},
             {"name": "Rifle Bash", "damage": 7, "accuracy": 90},
-            {"name": "Airstrike", "damage": 20, "accuracy": 50, "backfire": {"chance": 20}}
+            {"name": "Airstrike", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
         ]
-        self.role = "Veteran"
 
 class Hunter:
     def __init__(self):
@@ -66,9 +63,21 @@ class Hunter:
             {"name": "Trap", "damage": 9, "accuracy": 80},
             {"name": "Snipe", "damage": 14, "accuracy": 60},
             {"name": "Camouflage", "damage": 0, "accuracy": 100},
-            {"name": "Beast Lure", "damage": 20, "accuracy": 65, "backfire": {"chance": 20}}
+            {"name": "Beast Lure", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
         ]
-        self.role = "Hunter"
+
+class Illusionist:
+    def __init__(self):
+        self.hp = 95
+        self.attacks = [
+            {"name": "Mirror Image", "damage": 0, "accuracy": 100, "effect": "create clone to absorb next hit"},
+            {"name": "Phantom Strike", "damage": 10, "accuracy": 75},
+            {"name": "Mind Twist", "damage": 7, "accuracy": 85, "effect": "confuse enemy, chance to miss next attack"},
+            {"name": "False Reality", "damage": 0, "accuracy": 100, "effect": "force enemy to attack themselves (low chance)"},
+            {"name": "Vanishing Veil", "damage": 0, "accuracy": 100, "effect": "dodge next attack if timed well"},
+        ]
+
+
 
 def main():
     os.system("cls")
@@ -96,6 +105,11 @@ def main():
     }
     player = char_class_map[character_name]()
 
+    enemy_choices = [c for c in characterOptions if c != character_name]
+    enemy_character_name = random.choice(enemy_choices)
+    enemy = char_class_map[enemy_character_name]()
+    print(f"Your enemy is: {enemy_character_name}\n")
+
     attacks = select_random_attacks(player)
 
     print("Your attack options:")
@@ -105,7 +119,6 @@ def main():
             attack_str += f" [{attack['backfire']['chance']}% chance to backfire]"
         print(f"{attack_number}. {attack_str}")
 
-    # Player selects an attack
     while True:
         selected = getChar(f"Select your attack (1-{len(attacks)}): ")
         if selected.isnumeric():
@@ -113,6 +126,10 @@ def main():
             if 1 <= selected <= len(attacks):
                 chosen_attack = attacks[selected - 1]
                 print(f"You selected: {chosen_attack['name']}")
+                if random.randint(1, chosen_attack['accuracy']) > chosen_attack['accuracy']:
+                    print("attack missed")
+                else:
+                    print(f"attack hit enemy health at,")
                 break
         print("Invalid selection. Please try again.")
 
