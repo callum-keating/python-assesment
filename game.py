@@ -3,7 +3,7 @@ import os, sys, msvcrt, random
 def select_random_attacks(character):
     return random.sample(character.attacks, 3)
 
-characters = ["Scavenger", "Medic", "Veteran", "Hunter"]
+characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
 def getChar(msg:str):
     print(msg, end='', flush=True)
     char = msvcrt.getch()
@@ -17,7 +17,6 @@ def panic(errorMsg:str):
     print("panic: ", errorMsg)
     quit()
 
-# character classes
 class Scavenger:
     def __init__(self):
         self.hp = 100
@@ -84,7 +83,7 @@ def main():
     os.write(sys.stdout.fileno(), b"\033[?25l")
     characterOptions = random.sample(characters, 4)
     print("characters: ", characterOptions)
-    char = getChar("press Number 1-" + str(len(characters)) + ": ")
+    char = getChar("press Number 1-4: ")
     if not char.isnumeric():
         panic("Input is not an integer. make sure you type a number not character name!")
     char = int(char)
@@ -101,7 +100,8 @@ def main():
         "Scavenger": Scavenger,
         "Medic": Medic,
         "Veteran": Veteran,
-        "Hunter": Hunter
+        "Hunter": Hunter,
+        "Illusionist": Illusionist
     }
     player = char_class_map[character_name]()
 
