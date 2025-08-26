@@ -77,6 +77,16 @@ class Illusionist:
             {"name": "Shadow Rend", "damage": 11, "accuracy": 75},
         ]
 
+class enemy:
+    def __init__(self,player):
+        self.play = player
+    def takeDamage(self, damage):
+        self.play.hp -= damage
+    def getHp(self):
+        return self.play.hp
+    def getInstanceType(self):
+        return self.play
+
 
 
 def main():
@@ -108,7 +118,7 @@ def main():
 
     enemy_choices = [c for c in characterOptions if c != character_name]
     enemy_character_name = random.choice(enemy_choices)
-    enemy = char_class_map[enemy_character_name]()
+    enemyPlayer = enemy(char_class_map[enemy_character_name]())
     print(f"Your enemy is: {enemy_character_name}\n")
 
     attacks = select_random_attacks(player)
@@ -128,11 +138,9 @@ def main():
                 chosen_attack = attacks[selected - 1]
                 print(f"You selected: {chosen_attack['name']}")
                 accuracy = chosen_attack['accuracy']
-                randomNum = random.randint(1, 100)
-                hitChance = randomNum <= accuracy
-                print(f"Hit chance and accuracy: {randomNum}, {accuracy}")
-                if hitChance:
-                    print(f"attack hit enemy health at,")
+                if random.randint(1, 100) >= accuracy:
+                    enemyPlayer.takeDamage(chosen_attack['damage'])
+                    print(f"attack hit enemy health at", enemyPlayer.getHp())
                 else:
                     print("attack missed")
                 break
