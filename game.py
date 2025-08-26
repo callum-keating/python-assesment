@@ -2,14 +2,15 @@ import os, sys, msvcrt, random
 
 
 characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
-def getChar(msg:str):
+def getChar(msg:str, printChar:bool = True):
     print(msg, end='', flush=True)
     char = msvcrt.getch()
     try:
         char = char.decode("utf-8")
     except:
         char = ""
-    print(char)
+    if printChar:
+        print(char)
     return char
 def panic(errorMsg:str):
     print("panic: ", errorMsg)
@@ -84,10 +85,20 @@ class Enemy:
         return self.play.hp
     def getInstanceType(self):
         return self.play
+    def getAttacks(self):
+        return self.play.attacks
 
 class Player:
-    def __init__(self):
-        pass
+    def __init__(self,player):
+        self.play = player
+    def takeDamage(self, damage):
+        self.play.hp -= damage
+    def getHp(self):
+        return self.play.hp
+    def getInstanceType(self):
+        return self.play
+    def getAttacks(self):
+        return self.play.attacks
 
 
 
@@ -124,6 +135,18 @@ def main():
     print(f"Your enemy is: {enemy_character_name}")
     getChar("press any key to continue")
 
+    def enemyAttack(enemy,player):
+        attack = random.choice(enemy.getAttacks())
+        if random.randint(1, 100) <= attack['accuracy']:
+            player.takeDamage(attack['damage'])
+            print(f"Enemy attacks with {attack['name']} for {attack['damage']} damage.", flush=True)
+        else:
+            if 'backfire' in attack:
+                player.takeDamage(attack['backfire']['damage'])
+                print(f"Enemys attack backfired enemy took {attack['backfire']['damage']} damage.", flush=True)
+            else:
+                print("Enemy attack missed.", flush=True)
+
     while True:
         os.system("cls")
         attacks = random.sample(player.attacks, 3)
@@ -146,8 +169,15 @@ def main():
                         print("You defeated the enemy!")
                         break
                     print(f"attack hit enemy health at", enemyPlayer.getHp())
+
+                    enemyAttack(enemyPlayer, Player)
+                    sys.stdout.flush()
                 else:
-                    print("attack missed")
+                    print("attack missed ", end="")
+                    if 'backfire' in chosen_attack:
+                        print("your attack backfired!, your health is now at: ", player.hp)
+                    else:
+                        print("")
             getChar("press any key to enter next round")
         else:
             print("Invalid selection. Please try again.")
