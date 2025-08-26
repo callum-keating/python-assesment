@@ -1,7 +1,5 @@
 import os, sys, msvcrt, random
 
-def select_random_attacks(character):
-    return random.sample(character.attacks, 3)
 
 characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
 def getChar(msg:str):
@@ -77,7 +75,7 @@ class Illusionist:
             {"name": "Shadow Rend", "damage": 11, "accuracy": 75},
         ]
 
-class enemy:
+class Enemy:
     def __init__(self,player):
         self.play = player
     def takeDamage(self, damage):
@@ -86,6 +84,10 @@ class enemy:
         return self.play.hp
     def getInstanceType(self):
         return self.play
+
+class Player:
+    def __init__(self):
+        pass
 
 
 
@@ -118,13 +120,13 @@ def main():
 
     enemy_choices = [c for c in characterOptions if c != character_name]
     enemy_character_name = random.choice(enemy_choices)
-    enemyPlayer = enemy(char_class_map[enemy_character_name]())
+    enemyPlayer = Enemy(char_class_map[enemy_character_name]())
     print(f"Your enemy is: {enemy_character_name}\n")
 
 
     while True:
         os.system("cls")
-        attacks = select_random_attacks(player)
+        attacks = random.sample(player.attacks, 3)
         print("Your attack options:")
         for attack_number, attack in enumerate(attacks, 1):
             attack_str = f"{attack['name']} (Damage: {attack['damage']}, Accuracy: {attack['accuracy']}%)"
