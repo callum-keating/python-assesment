@@ -121,16 +121,16 @@ def main():
     enemyPlayer = enemy(char_class_map[enemy_character_name]())
     print(f"Your enemy is: {enemy_character_name}\n")
 
-    attacks = select_random_attacks(player)
-
-    print("Your attack options:")
-    for attack_number, attack in enumerate(attacks, 1):
-        attack_str = f"{attack['name']} (Damage: {attack['damage']}, Accuracy: {attack['accuracy']}%)"
-        if 'backfire' in attack:
-            attack_str += f" [{attack['backfire']['chance']}% chance to backfire]"
-        print(f"{attack_number}. {attack_str}")
 
     while True:
+        os.system("cls")
+        attacks = select_random_attacks(player)
+        print("Your attack options:")
+        for attack_number, attack in enumerate(attacks, 1):
+            attack_str = f"{attack['name']} (Damage: {attack['damage']}, Accuracy: {attack['accuracy']}%)"
+            if 'backfire' in attack:
+                attack_str += f" [{attack['backfire']['chance']}% chance to backfire]"
+            print(f"{attack_number}. {attack_str}")
         selected = getChar(f"Select your attack (1-{len(attacks)}): ")
         if selected.isnumeric():
             selected = int(selected)
@@ -143,8 +143,9 @@ def main():
                     print(f"attack hit enemy health at", enemyPlayer.getHp())
                 else:
                     print("attack missed")
-                break
-        print("Invalid selection. Please try again.")
+            getChar("press any key to enter next round")
+        else:
+            print("Invalid selection. Please try again.")
 
 
 if __name__ == "__main__":
