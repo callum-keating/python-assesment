@@ -24,7 +24,7 @@ class Scavenger:
             {"name": "Tripwire", "damage": 8, "accuracy": 75},
             {"name": "Molotov", "damage": 10, "accuracy": 65},
             {"name": "Slingshot", "damage": 6, "accuracy": 85},
-            {"name": "Explosive Barrel", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
+            {"name": "Explosive Barrel", "damage": 20, "accuracy": 60, "backfire": {"chance": 40}}
         ]
 
 class Medic:
@@ -36,7 +36,7 @@ class Medic:
             {"name": "Poison Dart", "damage": 8, "accuracy": 75},
             {"name": "Defibrillator Shock", "damage": 12, "accuracy": 60},
             {"name": "Adrenaline Rush", "damage": 10, "accuracy": 70},
-            {"name": "Toxic Overdose", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
+            {"name": "Toxic Overdose", "damage": 20, "accuracy": 60, "backfire": {"chance": 40}}
         ]
 
 class Veteran:
@@ -48,7 +48,7 @@ class Veteran:
             {"name": "Bayonet Charge", "damage": 8, "accuracy": 80},
             {"name": "Knife Throw", "damage": 9, "accuracy": 75},
             {"name": "Rifle Bash", "damage": 7, "accuracy": 90},
-            {"name": "Airstrike", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
+            {"name": "Airstrike", "damage": 20, "accuracy": 60, "backfire": {"chance": 40}}
         ]
 
 class Hunter:
@@ -60,7 +60,7 @@ class Hunter:
             {"name": "Trap", "damage": 9, "accuracy": 80},
             {"name": "Snipe", "damage": 14, "accuracy": 60},
             {"name": "Camouflage", "damage": 0, "accuracy": 100},
-            {"name": "Beast Lure", "damage": 20, "accuracy": 80, "backfire": {"chance": 20}}
+            {"name": "Beast Lure", "damage": 20, "accuracy": 60, "backfire": {"chance": 40}}
         ]
 
 class Illusionist:
