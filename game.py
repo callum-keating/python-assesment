@@ -107,7 +107,7 @@ def main():
     character_name = characterOptions[char - 1]
 
     os.system("cls")
-    print("you selected ", character_name)
+    print("You selected ", character_name)
 
     char_class_map = {
         "Scavenger": Scavenger,
@@ -121,8 +121,8 @@ def main():
     enemy_choices = [c for c in characterOptions if c != character_name]
     enemy_character_name = random.choice(enemy_choices)
     enemyPlayer = Enemy(char_class_map[enemy_character_name]())
-    print(f"Your enemy is: {enemy_character_name}\n")
-
+    print(f"Your enemy is: {enemy_character_name}")
+    getChar("press any key to continue")
 
     while True:
         os.system("cls")
