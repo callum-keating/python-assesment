@@ -142,13 +142,13 @@ def main():
                 accuracy = chosen_attack['accuracy']
                 if random.randint(1, 100) <= accuracy:
                     enemyPlayer.takeDamage(chosen_attack['damage'])
+                    if enemyPlayer.getHp() <= 0:
+                        print("You defeated the enemy!")
+                        break
                     print(f"attack hit enemy health at", enemyPlayer.getHp())
                 else:
                     print("attack missed")
             getChar("press any key to enter next round")
-            if enemyPlayer.getHp() <= 0:
-                print("You defeated the enemy!")
-                break
         else:
             print("Invalid selection. Please try again.")
 
