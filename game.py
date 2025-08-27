@@ -60,7 +60,7 @@ class Hunter:
             {"name": "Ambush", "damage": 12, "accuracy": 70},
             {"name": "Trap", "damage": 9, "accuracy": 80},
             {"name": "Snipe", "damage": 14, "accuracy": 60},
-            {"name": "Camouflage", "damage": 0, "accuracy": 100},
+            {"name": "Camouflage", "damage": 8, "accuracy": 75},
             {"name": "Beast Lure", "damage": 20, "accuracy": 60, "backfire": {"chance": 40}}
         ]
 
@@ -135,11 +135,11 @@ def main():
     print(f"Your enemy is: {enemy_character_name}")
     getChar("press any key to continue")
 
-    def enemyAttack(enemy,player):
+    def enemyAttack(enemy,player:Player):
         attack = random.choice(enemy.getAttacks())
         if random.randint(1, 100) <= attack['accuracy']:
             player.takeDamage(attack['damage'])
-            print(f"Enemy attacks with {attack['name']} for {attack['damage']} damage.", flush=True)
+            print(f"Enemy uses {attack['name']} your health is now {player.getHp()}", flush=True)
         else:
             if 'backfire' in attack:
                 player.takeDamage(attack['backfire']['damage'])
