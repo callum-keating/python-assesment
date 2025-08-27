@@ -113,7 +113,7 @@ def main():
     char = int(char)
     if char < 1:
         panic("Number can not be less than 1")
-    if char > len(characters):
+    if char > 4:
         panic("character doesn't exist, was your number to large")
     character_name = characterOptions[char - 1]
 
@@ -127,7 +127,7 @@ def main():
         "Hunter": Hunter,
         "Illusionist": Illusionist
     }
-    player = char_class_map[character_name]()
+    player = Player(char_class_map[character_name]())
 
     enemy_choices = [c for c in characterOptions if c != character_name]
     enemy_character_name = random.choice(enemy_choices)
@@ -149,7 +149,7 @@ def main():
 
     while True:
         os.system("cls")
-        attacks = random.sample(player.attacks, 3)
+        attacks = random.sample(player.getAttacks(), 3)
         print("Your attack options:")
         for attack_number, attack in enumerate(attacks, 1):
             attack_str = f"{attack['name']} (Damage: {attack['damage']}, Accuracy: {attack['accuracy']}%)"
@@ -170,14 +170,14 @@ def main():
                         break
                     print(f"attack hit enemy health at", enemyPlayer.getHp())
 
-                    enemyAttack(enemyPlayer, Player)
-                    sys.stdout.flush()
                 else:
                     print("attack missed ", end="")
                     if 'backfire' in chosen_attack:
                         print("your attack backfired!, your health is now at: ", player.hp)
                     else:
                         print("")
+            enemyAttack(enemyPlayer, player)
+            sys.stdout.flush()
             getChar("press any key to enter next round")
         else:
             print("Invalid selection. Please try again.")
