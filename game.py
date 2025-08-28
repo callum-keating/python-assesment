@@ -142,10 +142,10 @@ def main():
             print(f"Enemy uses {attack['name']} your health is now {player.getHp()}", flush=True)
         else:
             if 'backfire' in attack:
-                player.takeDamage(attack['backfire']['damage'])
-                print(f"Enemys attack backfired enemy took {attack['backfire']['damage']} damage.", flush=True)
+                player.takeDamage(attack['damage'])
+                print(f"Enemys attack backfired enemy took {attack['damage']} damage.", flush=True)
             else:
-                print("Enemy attack missed.", flush=True)
+                print(f"Enemy missed attack with {attack['name']}", flush=True)
 
     while True:
         os.system("cls")
@@ -173,7 +173,7 @@ def main():
                 else:
                     print("attack missed ", end="")
                     if 'backfire' in chosen_attack:
-                        print("your attack backfired!, your health is now at: ", player.hp)
+                        print("your attack backfired!, your health is now at: ", player.getHp())
                     else:
                         print("")
             enemyAttack(enemyPlayer, player)
