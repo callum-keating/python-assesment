@@ -13,9 +13,6 @@ def getChar(msg:str, printChar:bool = True):
     if printChar:
         print(char)
     return char
-def panic(errorMsg:str):
-    print("panic: ", errorMsg)
-    quit()
 
 class Scavenger:
     def __init__(self):
@@ -109,10 +106,6 @@ def main():
     characterOptions = random.sample(characters, 4)
     print("choose a character")
     char = uiCode.makeList(characterOptions) + 1
-    if char < 1:
-        panic("Number can not be less than 1")
-    if char > 4:
-        panic("character doesn't exist, was your number to large")
     character_name = characterOptions[char - 1]
 
     os.system("cls")
@@ -182,11 +175,11 @@ def main():
             getChar("press any key to enter next round")
             print(f"attack hit enemy health at", enemyPlayer.getHp())
         selectAttack(selected)
-        if enemyPlayer.getHp() <= 0:
-            uiCode.winScreen()
-            break
-        elif player.getHp() <= 0:
+        if player.getHp() <= 0:
             uiCode.looseScreen()
+            break
+        elif enemyPlayer.getHp() <= 0:
+            uiCode.winScreen()
             break
 
 
