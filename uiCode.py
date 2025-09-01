@@ -1,14 +1,18 @@
 import msvcrt
 import os
 
-def makeList(moves:list):
+def makeList(moves:list, highlight:bool=True):
     selected = 0
     while True:
         os.system('cls')
         loopNum = 0
         for i in moves:
             if loopNum == selected:
-                print("\033[34m> ", i, "\033[0m")
+                if highlight:
+                    print("\033[34m> ", i, "\033[0m")
+                else:
+                    print("> ", i)
+
             else:
                 print("", i)
             loopNum += 1

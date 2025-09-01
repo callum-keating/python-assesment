@@ -1,4 +1,5 @@
 import os, sys, msvcrt, random
+import uiCode
 
 
 characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
@@ -73,7 +74,7 @@ class Illusionist:
             {"name": "Spectral Slash", "damage": 8, "accuracy": 80},
             {"name": "Ethereal Blast", "damage": 12, "accuracy": 65},
             {"name": "Hallucination", "damage": 9, "accuracy": 70},
-            {"name": "Shadow Rend", "damage": 11, "accuracy": 75},
+            {"name": "Shadow Rend", "damage": 20, "accuracy": 75, "backfire": {"chance": 40}},
         ]
 
 class Enemy:
@@ -106,11 +107,8 @@ def main():
     os.system("cls")
     os.write(sys.stdout.fileno(), b"\033[?25l")
     characterOptions = random.sample(characters, 4)
-    print("characters: ", characterOptions)
-    char = getChar("press Number 1-4: ")
-    if not char.isnumeric():
-        panic("Input is not an integer. make sure you type a number not character name!")
-    char = int(char)
+    print("choose a character")
+    char = uiCode.makeList(characterOptions) + 1
     if char < 1:
         panic("Number can not be less than 1")
     if char > 4:
@@ -118,7 +116,7 @@ def main():
     character_name = characterOptions[char - 1]
 
     os.system("cls")
-    print("You selected ", character_name)
+    print(f"You selected: \033[32m{character_name}\033[0m")
 
     char_class_map = {
         "Scavenger": Scavenger,
@@ -132,14 +130,17 @@ def main():
     enemy_choices = [c for c in characterOptions if c != character_name]
     enemy_character_name = random.choice(enemy_choices)
     enemyPlayer = Enemy(char_class_map[enemy_character_name]())
-    print(f"Your enemy is: {enemy_character_name}")
+    print(f"Your enemy is: \033[31m{enemy_character_name}\033[0m")
     getChar("press any key to continue")
 
     def enemyAttack(enemy,player:Player):
         attack = random.choice(enemy.getAttacks())
         if random.randint(1, 100) <= attack['accuracy']:
             player.takeDamage(attack['damage'])
-            print(f"Enemy uses {attack['name']} your health is now {player.getHp()}", flush=True)
+            if player.getHp() <= 50:
+                print(f"Enemy uses {attack['name']} your health is now \033[31m{player.getHp()}\033[0m", flush=True)
+            else:
+                print(f"Enemy uses {attack['name']} your health is now {player.getHp()}", flush=True)
         else:
             if 'backfire' in attack:
                 player.takeDamage(attack['damage'])
@@ -151,40 +152,42 @@ def main():
         os.system("cls")
         attacks = random.sample(player.getAttacks(), 3)
         print("Your attack options:")
+        attacksList = []
         for attack_number, attack in enumerate(attacks, 1):
-            attack_str = f"{attack['name']} (Damage: {attack['damage']}, Accuracy: {attack['accuracy']}%)"
+            attack_str = f"{attack['name']} (Damage: \033[31m{attack['damage']}\033[0m, Accuracy: \033[32m{attack['accuracy']}%\033[0m)"
             if 'backfire' in attack:
-                attack_str += f" [{attack['backfire']['chance']}% chance to backfire]"
-            print(f"{attack_number}. {attack_str}")
-        def selectAttack():
-            selected = getChar(f"Select your attack (1-{len(attacks)}): ")
-            if selected.isnumeric():
-                selected = int(selected)
-                if 1 <= selected <= len(attacks):
-                    chosen_attack = attacks[selected - 1]
-                    print(f"You selected: {chosen_attack['name']}")
-                    accuracy = chosen_attack['accuracy']
-                    if random.randint(1, 100) <= accuracy:
-                        enemyPlayer.takeDamage(chosen_attack['damage'])
+                attack_str += f" \033[1m\033[31m[{attack['backfire']['chance']}% chance to backfire]\033[0m"
+            attacksList.append(attack_str)
+        selected = uiCode.makeList(attacksList, highlight=False) + 1
+
+        def selectAttack(selected:int):
+            if 1 <= selected <= len(attacks):
+                chosen_attack = attacks[selected - 1]
+                print(f"You selected: {chosen_attack['name']}")
+                accuracy = chosen_attack['accuracy']
+                if random.randint(1, 100) <= accuracy:
+                    enemyPlayer.takeDamage(chosen_attack['damage'])
+                    if enemyPlayer.getHp() <= 50:
+                        print(f"enemys health is now at \033[31m{enemyPlayer.getHp()}\033[0m")
                     else:
-                        print("attack missed ", end="")
-                        if 'backfire' in chosen_attack:
-                            print("your attack backfired!, your health is now at: ", player.getHp())
-                        else:
-                            print("")
-                enemyAttack(enemyPlayer, player)
-                sys.stdout.flush()
-                getChar("press any key to enter next round")
-            else:
-                print("Invalid selection. Please try again.")
-                selectAttack()
+                        print(f"enemys health is now at {enemyPlayer.getHp()}")
+                else:
+                    print("attack missed ", end="")
+                    if 'backfire' in chosen_attack:
+                        print(f"\033[31mYour attack backfired!, your health is now at: \033[1m{player.getHp()}\033[0m")
+                    else:
+                        print("")
+            enemyAttack(enemyPlayer, player)
+            sys.stdout.flush()
+            getChar("press any key to enter next round")
             print(f"attack hit enemy health at", enemyPlayer.getHp())
-        selectAttack()
+        selectAttack(selected)
         if enemyPlayer.getHp() <= 0:
-            print("You defeated the enemy!")
+            uiCode.winScreen()
             break
         elif player.getHp() <= 0:
-            print("You were defeated by the enemy!")
+            uiCode.looseScreen()
+            break
 
 
 if __name__ == "__main__":
