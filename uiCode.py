@@ -34,4 +34,4 @@ def winScreen():
     print("\033[1m\033[32mYou win!\033[0m")
 def looseScreen():
     os.system('cls')
-    print("You lose!")
+    print("\033[1m\033[31mYou loose!\033[0m")
