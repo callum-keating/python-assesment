@@ -156,31 +156,35 @@ def main():
             if 'backfire' in attack:
                 attack_str += f" [{attack['backfire']['chance']}% chance to backfire]"
             print(f"{attack_number}. {attack_str}")
-        selected = getChar(f"Select your attack (1-{len(attacks)}): ")
-        if selected.isnumeric():
-            selected = int(selected)
-            if 1 <= selected <= len(attacks):
-                chosen_attack = attacks[selected - 1]
-                print(f"You selected: {chosen_attack['name']}")
-                accuracy = chosen_attack['accuracy']
-                if random.randint(1, 100) <= accuracy:
-                    enemyPlayer.takeDamage(chosen_attack['damage'])
-                    if enemyPlayer.getHp() <= 0:
-                        print("You defeated the enemy!")
-                        break
-                    print(f"attack hit enemy health at", enemyPlayer.getHp())
-
-                else:
-                    print("attack missed ", end="")
-                    if 'backfire' in chosen_attack:
-                        print("your attack backfired!, your health is now at: ", player.getHp())
+        def selectAttack():
+            selected = getChar(f"Select your attack (1-{len(attacks)}): ")
+            if selected.isnumeric():
+                selected = int(selected)
+                if 1 <= selected <= len(attacks):
+                    chosen_attack = attacks[selected - 1]
+                    print(f"You selected: {chosen_attack['name']}")
+                    accuracy = chosen_attack['accuracy']
+                    if random.randint(1, 100) <= accuracy:
+                        enemyPlayer.takeDamage(chosen_attack['damage'])
                     else:
-                        print("")
-            enemyAttack(enemyPlayer, player)
-            sys.stdout.flush()
-            getChar("press any key to enter next round")
-        else:
-            print("Invalid selection. Please try again.")
+                        print("attack missed ", end="")
+                        if 'backfire' in chosen_attack:
+                            print("your attack backfired!, your health is now at: ", player.getHp())
+                        else:
+                            print("")
+                enemyAttack(enemyPlayer, player)
+                sys.stdout.flush()
+                getChar("press any key to enter next round")
+            else:
+                print("Invalid selection. Please try again.")
+                selectAttack()
+            print(f"attack hit enemy health at", enemyPlayer.getHp())
+        selectAttack()
+        if enemyPlayer.getHp() <= 0:
+            print("You defeated the enemy!")
+            break
+        elif player.getHp() <= 0:
+            print("You were defeated by the enemy!")
 
 
 if __name__ == "__main__":
