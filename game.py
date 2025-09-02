@@ -45,7 +45,7 @@ class Veteran:
         self.originalHp = self.hp
         self.attacks = [
             {"name": "Shoot", "damage": 10, "accuracy": 95},
-            {"name": "Grenade", "damage": 13, "accuracy": 70},
+            {"name": "Grenade", "damage": 11, "accuracy": 70},
             {"name": "Bayonet Charge", "damage": 8, "accuracy": 80},
             {"name": "Knife Throw", "damage": 9, "accuracy": 75},
             {"name": "Rifle Bash", "damage": 7, "accuracy": 90},
@@ -117,7 +117,7 @@ def main():
     os.write(sys.stdout.fileno(), b"\033[?25l")
     characterOptions = random.sample(characters, 4)
     print("choose a character")
-    char = uiCode.makeList(characterOptions) + 1
+    char = uiCode.makeList(characterOptions, showInfo=True) + 1
     character_name = characterOptions[char - 1]
 
     os.system("cls")
@@ -167,54 +167,52 @@ def main():
             attacksList.append(attack_str)
         selected = uiCode.makeList(attacksList, highlight=False) + 1
 
-        def selectAttack(selected:int):
-            chosen_attack = attacks[selected - 1]
-            print(f"You selected: {chosen_attack['name']}")
-            accuracy = chosen_attack['accuracy']
-            if random.randint(1, 100) <= accuracy:
-                enemyPlayer.takeDamage(chosen_attack['damage'])
-                if enemyPlayer.getHp() < 0:
-                    enemyPlayer.zeroHp()
-                if enemyPlayer.getHp() <= 50:
-                    print(f"enemys health is now at \033[31m{enemyPlayer.getHp()}\033[0m")
-                else:
-                    print(f"enemys health is now at {enemyPlayer.getHp()}")
+        chosen_attack = attacks[selected - 1]
+        print(f"You selected: {chosen_attack['name']}")
+        accuracy = chosen_attack['accuracy']
+        if random.randint(1, 100) <= accuracy:
+            enemyPlayer.takeDamage(chosen_attack['damage'])
+            if enemyPlayer.getHp() < 0:
+                enemyPlayer.zeroHp()
+            if enemyPlayer.getHp() <= 50:
+                print(f"enemys health is now at \033[31m{enemyPlayer.getHp()}\033[0m")
             else:
-                print("attack missed ", end="")
-                if 'backfire' in chosen_attack:
-                    player.takeDamage(chosen_attack['damage'])
-                    print(f"\033[31mYour attack backfired!, your health is now at: \033[1m{player.getHp()}\033[0m")
-                else:
-                    print("")
+                print(f"enemys health is now at {enemyPlayer.getHp()}")
+        else:
+            print("attack missed ", end="")
+            if 'backfire' in chosen_attack:
+                player.takeDamage(chosen_attack['damage'])
+                print(f"\033[31mYour attack backfired!, your health is now at: \033[1m{player.getHp()}\033[0m")
+            else:
+                print("")
 
-            if player.getHp() == 0:
-                return
-            enemyAttack(enemyPlayer, player)
+        if player.getHp() == 0:
+            return
+        enemyAttack(enemyPlayer, player)
 
-            originalHp = player.getOriginalHp()
-            currentHp = player.getHp()
+        originalHp = player.getOriginalHp()
+        currentHp = player.getHp()
 
-            remaining = "\033[32m" + "." * currentHp
+        remaining = "\033[32m" + "." * currentHp
 
-            lost = "\033[31m" + "." * (originalHp - currentHp)
+        lost = "\033[31m" + "." * (originalHp - currentHp)
 
-            print_str = remaining + lost + "\033[0m"
-            print(" " * int(len(print_str) / 2 - 11) + "your health")
-            print(print_str)
+        print_str = remaining + lost + "\033[0m"
+        print(" " * int(len(print_str) / 2 - 11) + "your health")
+        print(print_str)
 
-            originalHp = enemyPlayer.getOriginalHp()
-            currentHp = enemyPlayer.getHp()
+        originalHp = enemyPlayer.getOriginalHp()
+        currentHp = enemyPlayer.getHp()
 
-            remaining = "\033[32m" + "." * currentHp
+        remaining = "\033[32m" + "." * currentHp
 
-            lost = "\033[31m" + "." * (originalHp - currentHp)
+        lost = "\033[31m" + "." * (originalHp - currentHp)
 
-            print_str = remaining + lost + "\033[0m"
-            print(" " * int(len(print_str) / 2 - len("enemys health")) + "enemys health")
-            print(print_str)
-            sys.stdout.flush()
-            getChar("press any key to enter next round")
-        selectAttack(selected)
+        print_str = remaining + lost + "\033[0m"
+        print(" " * int(len(print_str) / 2 - len("enemys health")) + "enemys health")
+        print(print_str)
+        sys.stdout.flush()
+        getChar("press any key to enter next round")
         if player.getHp() <= 0:
             uiCode.looseScreen()
             break

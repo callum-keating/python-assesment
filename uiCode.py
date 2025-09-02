@@ -1,10 +1,12 @@
 import msvcrt
 import os
 
-def makeList(moves:list, highlight:bool=True):
+def makeList(moves:list, highlight:bool=True, showInfo:bool=False):
     selected = 0
     while True:
         os.system('cls')
+        if showInfo:
+            print("\033[1m\033[33m*Use up and down arrow keys to navigate and Enter to select.*\033[0m")
         loopNum = 0
         for i in moves:
             if loopNum == selected:
