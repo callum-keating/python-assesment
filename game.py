@@ -1,7 +1,6 @@
 import os, sys, msvcrt, random
 import uiCode
 
-
 characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
 def getChar(msg:str, printChar:bool = True):
     print(msg, end='', flush=True)
@@ -17,6 +16,7 @@ def getChar(msg:str, printChar:bool = True):
 class Scavenger:
     def __init__(self):
         self.hp = 100
+        self.originalHp = self.hp
         self.attacks = [
             {"name": "Makeshift Blade", "damage": 7, "accuracy": 90},
             {"name": "Rock Throw", "damage": 5, "accuracy": 80},
@@ -29,6 +29,7 @@ class Scavenger:
 class Medic:
     def __init__(self):
         self.hp = 90
+        self.originalHp = self.hp
         self.attacks = [
             {"name": "Syringe Stab", "damage": 7, "accuracy": 85},
             {"name": "Medical Saw", "damage": 9, "accuracy": 80},
@@ -41,6 +42,7 @@ class Medic:
 class Veteran:
     def __init__(self):
         self.hp = 120
+        self.originalHp = self.hp
         self.attacks = [
             {"name": "Shoot", "damage": 10, "accuracy": 95},
             {"name": "Grenade", "damage": 13, "accuracy": 70},
@@ -53,6 +55,7 @@ class Veteran:
 class Hunter:
     def __init__(self):
         self.hp = 110
+        self.originalHp = self.hp
         self.attacks = [
             {"name": "Track", "damage": 6, "accuracy": 85},
             {"name": "Ambush", "damage": 12, "accuracy": 70},
@@ -65,6 +68,7 @@ class Hunter:
 class Illusionist:
     def __init__(self):
         self.hp = 95
+        self.originalHp = self.hp
         self.attacks = [
             {"name": "Phantom Strike", "damage": 10, "accuracy": 75},
             {"name": "Mind Twist", "damage": 7, "accuracy": 85},
@@ -85,6 +89,8 @@ class Enemy:
         return self.play
     def getAttacks(self):
         return self.play.attacks
+    def getOriginalHp(self):
+        return self.play.originalHp
 
 class Player:
     def __init__(self,player):
@@ -97,6 +103,8 @@ class Player:
         return self.play
     def getAttacks(self):
         return self.play.attacks
+    def getOriginalHp(self):
+        return self.play.originalHp
 
 
 
@@ -154,26 +162,48 @@ def main():
         selected = uiCode.makeList(attacksList, highlight=False) + 1
 
         def selectAttack(selected:int):
-            if 1 <= selected <= len(attacks):
-                chosen_attack = attacks[selected - 1]
-                print(f"You selected: {chosen_attack['name']}")
-                accuracy = chosen_attack['accuracy']
-                if random.randint(1, 100) <= accuracy:
-                    enemyPlayer.takeDamage(chosen_attack['damage'])
-                    if enemyPlayer.getHp() <= 50:
-                        print(f"enemys health is now at \033[31m{enemyPlayer.getHp()}\033[0m")
-                    else:
-                        print(f"enemys health is now at {enemyPlayer.getHp()}")
+            chosen_attack = attacks[selected - 1]
+            print(f"You selected: {chosen_attack['name']}")
+            accuracy = chosen_attack['accuracy']
+            if random.randint(1, 100) <= accuracy:
+                enemyPlayer.takeDamage(chosen_attack['damage'])
+                if enemyPlayer.getHp() <= 50:
+                    print(f"enemys health is now at \033[31m{enemyPlayer.getHp()}\033[0m")
                 else:
-                    print("attack missed ", end="")
-                    if 'backfire' in chosen_attack:
-                        print(f"\033[31mYour attack backfired!, your health is now at: \033[1m{player.getHp()}\033[0m")
-                    else:
-                        print("")
+                    print(f"enemys health is now at {enemyPlayer.getHp()}")
+            else:
+                print("attack missed ", end="")
+                if 'backfire' in chosen_attack:
+                    print(f"\033[31mYour attack backfired!, your health is now at: \033[1m{player.getHp()}\033[0m")
+                else:
+                    print("")
+
+
             enemyAttack(enemyPlayer, player)
+
+            originalHp = player.getOriginalHp()
+            currentHp = player.getHp()
+
+            remaining = "\033[32m" + "." * currentHp
+
+            lost = "\033[31m" + "." * (originalHp - currentHp)
+
+            print_str = remaining + lost + "\033[0m"
+            print(" " * int(len(print_str) / 2 - 11) + "your health")
+            print(print_str)
+
+            originalHp = enemyPlayer.getOriginalHp()
+            currentHp = enemyPlayer.getHp()
+
+            remaining = "\033[32m" + "." * currentHp
+
+            lost = "\033[31m" + "." * (originalHp - currentHp)
+
+            print_str = remaining + lost + "\033[0m"
+            print(" " * int(len(print_str) / 2 - len("enemys health")) + "enemys health")
+            print(print_str)
             sys.stdout.flush()
             getChar("press any key to enter next round")
-            print(f"attack hit enemy health at", enemyPlayer.getHp())
         selectAttack(selected)
         if player.getHp() <= 0:
             uiCode.looseScreen()
