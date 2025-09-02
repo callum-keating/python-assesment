@@ -91,6 +91,8 @@ class Enemy:
         return self.play.attacks
     def getOriginalHp(self):
         return self.play.originalHp
+    def zeroHp(self):
+        self.play.hp = 0
 
 class Player:
     def __init__(self,player):
@@ -105,6 +107,8 @@ class Player:
         return self.play.attacks
     def getOriginalHp(self):
         return self.play.originalHp
+    def zeroHp(self):
+       self.play.hp = 0
 
 
 
@@ -139,6 +143,8 @@ def main():
         if random.randint(1, 100) <= attack['accuracy']:
             player.takeDamage(attack['damage'])
             if player.getHp() <= 50:
+                if player.getHp() < 0:
+                    player.zeroHp()
                 print(f"Enemy uses {attack['name']} your health is now \033[31m{player.getHp()}\033[0m", flush=True)
             else:
                 print(f"Enemy uses {attack['name']} your health is now {player.getHp()}", flush=True)
@@ -167,6 +173,8 @@ def main():
             accuracy = chosen_attack['accuracy']
             if random.randint(1, 100) <= accuracy:
                 enemyPlayer.takeDamage(chosen_attack['damage'])
+                if enemyPlayer.getHp() < 0:
+                    enemyPlayer.zeroHp()
                 if enemyPlayer.getHp() <= 50:
                     print(f"enemys health is now at \033[31m{enemyPlayer.getHp()}\033[0m")
                 else:
@@ -178,7 +186,8 @@ def main():
                 else:
                     print("")
 
-
+            if player.getHp() == 0:
+                return
             enemyAttack(enemyPlayer, player)
 
             originalHp = player.getOriginalHp()
