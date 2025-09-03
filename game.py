@@ -115,6 +115,22 @@ class Player:
        self.play.hp = 0
 
 
+def enemyAttack(enemy:Enemy,player:Player):
+    attack = random.choice(enemy.getAttacks())
+    if random.randint(1, 100) <= attack['accuracy']:
+        player.takeDamage(attack['damage'])
+        if player.getHp() <= 50:
+            if player.getHp() < 0:
+                player.zeroHp()
+            print(f"Enemy uses {attack['name']} your health is now \033[31m{player.getHp()}\033[0m", flush=True)
+        else:
+            print(f"Enemy uses {attack['name']} your health is now {player.getHp()}", flush=True)
+    else:
+        if 'backfire' in attack:
+            enemy.takeDamage(attack['damage'])
+            print(f"Enemys attack backfired enemy took {attack['damage']} damage.", flush=True)
+        else:
+            print(f"Enemy missed attack with {attack['name']}", flush=True)
 
 def main():
     os.system("cls")
@@ -142,22 +158,6 @@ def main():
     print(f"Your enemy is: \033[31m{enemy_character_name}\033[0m")
     getChar("press any key to continue")
 
-    def enemyAttack(enemy,player:Player):
-        attack = random.choice(enemy.getAttacks())
-        if random.randint(1, 100) <= attack['accuracy']:
-            player.takeDamage(attack['damage'])
-            if player.getHp() <= 50:
-                if player.getHp() < 0:
-                    player.zeroHp()
-                print(f"Enemy uses {attack['name']} your health is now \033[31m{player.getHp()}\033[0m", flush=True)
-            else:
-                print(f"Enemy uses {attack['name']} your health is now {player.getHp()}", flush=True)
-        else:
-            if 'backfire' in attack:
-                enemy.takeDamage(attack['damage'])
-                print(f"Enemys attack backfired enemy took {attack['damage']} damage.", flush=True)
-            else:
-                print(f"Enemy missed attack with {attack['name']}", flush=True)
 
     while True:
         os.system("cls")
