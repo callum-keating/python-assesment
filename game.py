@@ -5,14 +5,18 @@ characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
 def getChar(msg:str, printChar:bool = True):
     print(msg, end='', flush=True)
     char = msvcrt.getch()
+    if char == b'\x03':
+        os.write(sys.stdout.fileno(), b"\033[?1049l")
+        os.write(sys.stdout.fileno(), b"\033[?25h")
+        quit()
     try:
         char = char.decode("utf-8")
     except:
         char = ""
     if printChar:
         print(char)
+    
     return char
-
 class Scavenger:
     def __init__(self):
         self.hp = 100

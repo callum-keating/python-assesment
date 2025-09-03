@@ -1,5 +1,5 @@
 import msvcrt
-import os
+import os, sys
 
 def makeList(moves:list, highlight:bool=True, showInfo:bool=False):
     selected = 0
@@ -20,8 +20,12 @@ def makeList(moves:list, highlight:bool=True, showInfo:bool=False):
             loopNum += 1
         del loopNum
         key = msvcrt.getch()
-        if key in {b'\x00', b'\xe0'}:  # special key prefix
-            key = msvcrt.getch()  # actual key
+        if key == b'\x03':
+            os.write(sys.stdout.fileno(), b"\033[?1049l")
+            os.write(sys.stdout.fileno(), b"\033[?25h")
+            quit()
+        if key in {b'\x00', b'\xe0'}:
+            key = msvcrt.getch()
             if key == b'P':
                 selected += 1
             elif key == b'H':
