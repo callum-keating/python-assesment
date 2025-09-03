@@ -176,9 +176,9 @@ def main():
         accuracy = chosen_attack['accuracy']
         if random.randint(1, 100) <= accuracy:
             enemyPlayer.takeDamage(chosen_attack['damage'])
-            if enemyPlayer.getHp() < 0:
-                enemyPlayer.zeroHp()
             if enemyPlayer.getHp() <= 50:
+                if enemyPlayer.getHp() < 0:
+                    enemyPlayer.zeroHp()
                 print(f"enemys health is now at \033[31m{enemyPlayer.getHp()}\033[0m")
             else:
                 print(f"enemys health is now at {enemyPlayer.getHp()}")
