@@ -10,8 +10,7 @@ def makeList(moves:list, highlight:bool=True, showInfo:bool=False):
         #prints how to use it if specified
         if showInfo:
             print("\033[1m\033[33m*Use up and down arrow keys to navigate and Enter to select.*\033[0m")
-        loopNum = 0
-        for i in moves:
+        for loopNum, i in enumerate(moves):
             #show selected if the loop is currently on it
             if loopNum == selected:
                 if highlight:
