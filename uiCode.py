@@ -92,3 +92,4 @@ def startScreen(characters):
         printImage(characters[selected].lower())
         print("currently selecting:", characters[selected])
         print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
+    return selected

@@ -160,7 +160,7 @@ def main():
     characterOptions = random.sample(characters, 4)
     print("choose a character")
     #calls makeList to display character options and adds 1 as list has 0 index and we want 1 index
-    char = uiCode.makeList(characterOptions, showInfo=True) + 1
+    char = uiCode.startScreen(characterOptions)
     character_name = characterOptions[char - 1]
     #clears the list from the screen
     os.system("cls")
