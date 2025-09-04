@@ -1,5 +1,5 @@
 import msvcrt
-import os, sys
+import os, sys, time
 
 def makeList(moves:list, highlight:bool=True, showInfo:bool=False):
     #creates a selected variable to store the currently highlighted value
@@ -62,6 +62,7 @@ def printImage(image: str):
             lines = [line.rstrip('\n') for line in f]
         for line in lines:
             print(line)
+            time.sleep(.005)
     except FileNotFoundError:
         print(f"Error: File characters/{image}.txt not found.")
     except Exception as e:
