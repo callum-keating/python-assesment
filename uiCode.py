@@ -69,8 +69,9 @@ def printImage(image: str):
 def startScreen(characters):
     os.system('cls')
     printImage(characters[0].lower())
-    print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
     selected = 0
+    print("currently selecting:", characters[selected])
+    print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
     while True:
         key = msvcrt.getch()
         if key in {b'\x00', b'\xe0'}:
@@ -89,7 +90,5 @@ def startScreen(characters):
             break
         os.system('cls')
         printImage(characters[selected].lower())
+        print("currently selecting:", characters[selected])
         print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
-if __name__ == "__main__":
-    characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
-    startScreen(characters)
