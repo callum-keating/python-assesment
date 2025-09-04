@@ -70,7 +70,7 @@ def startScreen(characters):
     os.system('cls')
     printImage(characters[0].lower())
     selected = 0
-    print("currently selecting:", characters[selected])
+    print("currently selecting:\033[36m", characters[selected], "\033[0m")
     print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
     while True:
         key = msvcrt.getch()
@@ -90,6 +90,6 @@ def startScreen(characters):
             break
         os.system('cls')
         printImage(characters[selected].lower())
-        print("currently selecting:", characters[selected])
+        print("currently selecting:\033[36m", characters[selected], "\033[0m")
         print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
-    return selected
+    return selected + 1
