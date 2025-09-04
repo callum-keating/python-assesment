@@ -54,3 +54,42 @@ def tieScreen():
     os.system('cls')
     #show bold and coloured tie
     print("\033[1m\033[33mIt's a tie!\033[0m")
+def printImage(image: str):
+    os.system('cls')  # Clear screen (Windows)
+    try:
+        with open(f"characters/{image}.txt", "r", encoding="utf-8") as f:
+            # Read lines without newlines
+            lines = [line.rstrip('\n') for line in f]
+        for line in lines:
+            print(line)
+    except FileNotFoundError:
+        print(f"Error: File characters/{image}.txt not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+def startScreen(characters):
+    os.system('cls')
+    printImage(characters[0].lower())
+    print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
+    selected = 0
+    while True:
+        key = msvcrt.getch()
+        if key in {b'\x00', b'\xe0'}:
+            key = msvcrt.getch()
+            if key == b'K':
+                selected -= 1
+            elif key == b'M':
+                selected += 1
+            selected = max(0, min(selected, len(characters) - 1))
+        elif key == b'\x03':
+            #exit alternate buffer and restore cursor before quitting
+            os.write(sys.stdout.fileno(), b"\033[?1049l")
+            os.write(sys.stdout.fileno(), b"\033[?25h")
+            quit()
+        elif key == b'\r':  # Enter key
+            break
+        os.system('cls')
+        printImage(characters[selected].lower())
+        print("\033[1m\033[33m*Use left and right arrow keys to navigate and Enter to select.*\033[0m")
+if __name__ == "__main__":
+    characters = ["Scavenger", "Medic", "Veteran", "Hunter", "Illusionist"]
+    startScreen(characters)
