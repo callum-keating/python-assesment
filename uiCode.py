@@ -49,4 +49,8 @@ def winScreen():
 def looseScreen():
     os.system('cls')
     #show bold and coloured lose
-    print("\033[1m\033[31mYou loose!\033[0m")
+    print("\033[1m\033[31myou loose!\033[0m")
+def tieScreen():
+    os.system('cls')
+    #show bold and coloured tie
+    print("\033[1m\033[33mIt's a tie!\033[0m")

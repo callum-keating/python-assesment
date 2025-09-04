@@ -259,6 +259,9 @@ def main():
         sys.stdout.flush()
         getChar("press any key to enter next round")
         #display loose/winscreen if the enemy has lost
+        if player.getHp() <= 0 and enemyPlayer.getHp() <= 0:
+            uiCode.tieScreen()
+            break
         if player.getHp() <= 0:
             uiCode.looseScreen()
             break
